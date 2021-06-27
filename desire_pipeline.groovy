@@ -1,30 +1,14 @@
-pipeline {
-    agent any
+def gitUrl = 'https://github.com/alicommit-malp/jenkins_dsl_example'
 
-    stages {
-        stage('cloning repo ... ') {
-            steps {
-                git 'https://github.com/alicommit-malp/jenkins_dsl_example'
-            }
-        }
-        
-        stage('build'){
-            agent{
-                docker { 
-                    image 'python:2' 
-                    reuseNode true
-                }    
-            }
-            steps{
-                sh "pip install -r $WORKSPACE/python/requirements.txt"
-                sh "python $WORKSPACE/python/main.py"
-            }
-        }
-            
+job('test-job') {
+    scm {
+        git(gitUrl)
     }
-    post{
-        success{
-            echo "Cool :)"
-        }
+    triggers {
+        scm('*/15 * * * *')
+    }
+    steps {
+        sh "pip install -r $WORKSPACE/python/requirements.txt"
+        sh "python $WORKSPACE/python/main.py"
     }
 }
