@@ -9,8 +9,12 @@ for(i in 0..3) {
             scm('*/15 * * * *')
         }
         steps {
-            sh "pip install -r $WORKSPACE/python/requirements.txt"
-            sh "python $WORKSPACE/python/main.py"
+            shell(
+                //sh "pip install -r $WORKSPACE/python/requirements.txt"
+                //sh "python $WORKSPACE/python/main.py"
+                "echo 'run after Maven'"
+            )
+            
         }
     }
 }
